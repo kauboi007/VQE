@@ -1,19 +1,19 @@
 import Std.Convert.IntAsDouble;
 open Microsoft.Quantum.Math;
-operation ansatz(qs:Qubit[],t1:Double , t2: Double , t3:Double , t4:Double):Unit{
-    Ry(t1,qs[0]);
-    Ry(t2,qs[1]);
+operation ansatz(qs:Qubit[],t:Double[]):Unit{
+    Ry(t[0],qs[0]);
+    Ry(t[1],qs[1]);
     CNOT(qs[0],qs[1]);
-    Ry(t3,qs[0]);
-    Ry(t4,qs[1]);
+    Ry(t[2],qs[0]);
+    Ry(t[3],qs[1]);
 }
 // IZ EXPECTATION
-operation expIz(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
+operation expIz(t:Double[],shots:Int): Double{
     mutable zeros=0;
     mutable ones=0;
     for i in 1..shots{
         use qs=Qubit[2];
-        ansatz(qs,t1,t2,t3,t4);
+        ansatz(qs,t);
         let r=M(qs[0]);
         if r==Zero{
             set zeros+=1;
@@ -26,12 +26,12 @@ operation expIz(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     return IntAsDouble(zeros-ones)/IntAsDouble(shots);//<z0>=(n0-n1)/(n0+n1)
 }
 //ZZ EXPECTATION
-operation expzz(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
+operation expzz(t:Double[],shots:Int): Double{
     mutable same=0;
     mutable diff=0;
     for i in 1..shots{
         use qs=Qubit[2];
-        ansatz(qs,t1,t2,t3,t4);
+        ansatz(qs,t);
         let r=M(qs[0]);
         let s=M(qs[1]);
         if r==s{
@@ -45,12 +45,12 @@ operation expzz(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     return IntAsDouble(same-diff)/IntAsDouble(shots);//<zz>=(nsame-diff)/(nsame0+ndiff)
 }
 //XX EXPECTATION
-operation expxx(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
+operation expxx(t:Double[],shots:Int): Double{
     mutable same=0;
     mutable diff=0;
     for i in 1..shots{
         use qs=Qubit[2];
-        ansatz(qs,t1,t2,t3,t4);
+        ansatz(qs,t);
         H(qs[0]);
         H(qs[1]);
         let r=M(qs[0]);
@@ -66,12 +66,12 @@ operation expxx(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     return IntAsDouble(same-diff)/IntAsDouble(shots);//<zz>=(nsame-diff)/(nsame0+ndiff)
 }
 //YY EXPECTATION
-operation expyy(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
+operation expyy(t:Double[],shots:Int): Double{
     mutable same=0;
     mutable diff=0;
     for i in 1..shots{
         use qs=Qubit[2];
-        ansatz(qs,t1,t2,t3,t4);
+        ansatz(qs,t);
         Adjoint S(qs[0]);
         Adjoint S(qs[1]);
         H(qs[0]);
@@ -89,12 +89,12 @@ operation expyy(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     return IntAsDouble(same-diff)/IntAsDouble(shots);//<zz>=(nsame-diff)/(nsame0+ndiff)
 }
 //ZI EXPECTATION
-operation expzI(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
+operation expzI(t:Double[],shots:Int): Double{
     mutable zeros=0;
     mutable ones=0;
     for i in 1..shots{
         use qs=Qubit[2];
-        ansatz(qs,t1,t2,t3,t4);
+        ansatz(qs,t);
         let r=M(qs[1]);
         if r==Zero{
             set zeros+=1;
@@ -106,6 +106,6 @@ operation expzI(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     }
     return IntAsDouble(zeros-ones)/IntAsDouble(shots);//<z0>=(n0-n1)/(n0+n1)
 }
-operation Main(): Unit{
-    
+operation measureall(t:Double[],shots:Int):(Double,Double,Double,Double,Double){
+    return (expIz(t,shots),expzI(t,shots),expzz(t,shots),expxx(t,shots),expyy(t,shots));
 }
