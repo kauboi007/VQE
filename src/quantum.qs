@@ -1,3 +1,4 @@
+namespace mkvqe{
 import Std.Convert.IntAsDouble;
 open Microsoft.Quantum.Math;
 operation ansatz(qs:Qubit[],t:Double[]):Unit{
@@ -108,4 +109,5 @@ operation expzI(t:Double[],shots:Int): Double{
 }
 operation measureall(t:Double[],shots:Int):(Double,Double,Double,Double,Double){
     return (expIz(t,shots),expzI(t,shots),expzz(t,shots),expxx(t,shots),expyy(t,shots));
+}
 }
