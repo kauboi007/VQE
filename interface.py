@@ -3,16 +3,26 @@
 import qsharp as qs
 import numpy as np
 from scipy.optimize import minimize
+from hamiltonian import parsepauli,getpaulicoeffs,parser
 qs.init(project_root='.')
-coeff=[-0.8105,0.1721,-0.1721,- 0.2227,0.1209,0.1209]#pauli coeff as an array
 
-#cost function to get the expectation values from the qsharp code and substitute into the pauli string
+atoms = [('H', (0,0,0)), ('H', (0,0,0.74))]
+pd=parser(getpaulicoeffs(atoms))
 def costfn(t):
-    res = qs.eval(f"mkvqe.measureall({[float(x) for x in t]}, 1000)")
-    return coeff[0]+res[0]*coeff[1]+res[1]*coeff[2]+res[2]*coeff[3]+res[3]*coeff[4]+res[4]*coeff[5]
+    energy=0
+    for term,coeff in pd.items():
+        if term=="I":
+            energy+=coeff
+        else:
+            gates,qubits=parsepauli(term)
+            gatesstr = "[" + ",".join(f'"{g}"' for g in gates) + "]"
+            energy+=coeff*qs.eval(f"mkvqe.expval({gatesstr},{qubits},{[float(x) for x in t]},1000)")
+
+    return energy
+
 best=None;
 for i in range(5):
-    t0 = np.random.uniform(0, 2*np.pi, 4)
+    t0 = np.random.uniform(0, 2*np.pi, 8)
     res = minimize(costfn, t0, method='COBYLA')
     if best is None or res.fun<best.fun:
         best=res

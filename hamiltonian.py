@@ -17,7 +17,17 @@ def parser(qubitop):
         paulidic[pauli_str] = float(coeff)
     return paulidic
 
-#test
-atoms = [('H', (0, 0, 0)), ('H', (0, 0, 0.74))]
-op = getpaulicoeffs(atoms)
-print(parser(op))
+def parsepauli(paulistring):
+    n=len(paulistring)
+    gates=[]
+    qubits=[]
+    for i in range(0,n,2):
+        gates.append(paulistring[i])
+        qubits.append(int(paulistring[i+1]))
+    return gates,qubits
+
+
+
+
+
+
