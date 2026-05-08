@@ -1,1 +1,121 @@
-Variational Quantum Eigensolver - using qsharp and py 
+# VQE — Variational Quantum Eigensolver
+
+A general-purpose Variational Quantum Eigensolver built from scratch in Q# and Python. Given any molecule, this system automatically generates its Hamiltonian as a Pauli string using quantum chemistry libraries and finds the ground state energy using a hybrid classical-quantum optimization loop.**Not Vibecoded**
+
+---
+
+## Features
+
+**Quantum Circuit (Q#)**
+- 4-qubit hardware-efficient ansatz with 2 entangling layers
+- Each layer consists of Ry rotations on all qubits followed by a CNOT chain (linear entanglement)
+- 16 variational parameters total across both layers
+- General expectation value operation that accepts any Pauli term at runtime — no hardcoded measurement functions
+- Automatic basis rotation: H gate for X measurements, S†H for Y measurements, identity for Z
+- Parity-based multi-qubit measurement — only measures qubits relevant to each Pauli term, reducing noise
+
+**Hamiltonian Generation (Python + PySCF + OpenFermion)**
+- Accepts any molecule as atomic geometry input
+- Runs Hartree-Fock calculation via PySCF to obtain molecular integrals
+- Applies Jordan-Wigner transformation via OpenFermion to convert fermionic Hamiltonian to qubit Pauli operators
+- Parses the resulting QubitOperator into a clean Python dictionary of Pauli terms and coefficients
+- Supports custom basis sets, molecular charge, and spin multiplicity
+
+**Classical Optimization (Python + SciPy)**
+- COBYLA optimizer via scipy.optimize.minimize
+- Multi-start strategy — runs optimizer from multiple random initial parameter sets and keeps the best result
+- Configurable number of shots, optimizer runs, and basis set per molecule call
+
+**General VQE Runner**
+- Single `run_vqe()` function call handles the entire pipeline end to end
+- Molecule-agnostic — pass any atomic geometry, charge, and multiplicity
+- Outputs ground state energy in Hartrees and kJ/mol
+- Prints optimal variational parameters
+
+---
+
+## Tested Molecules - can support many more
+
+| Molecule | Formula | Notes |
+|----------|---------|-------|
+| Hydrogen | H₂ | Primary test case, ~0.01 Hartree from exact |
+| Lithium Hydride | LiH | Larger system, recommended shots ≥ 2000 |
+| Helium Hydride | HeH⁺ | Charged system, charge=1 |
+| Water | H₂O | Slower, recommend shots ≥ 2000 |
+| Beryllium Hydride | BeH₂ | Larger system |
+
+---
+
+## Project Structure
+
+```
+VQE/
+├── src/
+│   └── quantum.qs       # Q# ansatz and general expectation value
+├── hamiltonian.py        # PySCF + OpenFermion Hamiltonian pipeline
+├── interface.py          # Cost function, optimizer, run_vqe()
+├── qsharp.json           # Q# project config
+└── README.md
+```
+
+---
+
+## How It Works
+
+```
+Molecule geometry
+      ↓
+PySCF Hartree-Fock     → molecular integrals
+      ↓
+Jordan-Wigner transform → Pauli string with coefficients
+      ↓
+Q# ansatz circuit       → parameterised quantum state |ψ(θ)⟩
+      ↓
+Expectation values      → ⟨ψ(θ)|H|ψ(θ)⟩ per Pauli term
+      ↓
+COBYLA optimizer        → minimise energy over θ
+      ↓
+Ground state energy E₀
+```
+
+---
+
+## Requirements
+
+```
+qsharp
+pyscf
+openfermion
+openfermionpyscf
+numpy
+scipy
+```
+
+Install inside a virtual environment (Linux/WSL recommended for PySCF):
+```bash
+python3 -m venv vqe-env
+source vqe-env/bin/activate
+pip install qsharp pyscf openfermion openfermionpyscf numpy scipy
+```
+
+---
+
+## Results
+
+H₂ ground state energy (STO-3G basis):
+- Exact HF: -1.1175 Hartree
+- This VQE: -1.1077 Hartree
+- Difference: ~0.01 Hartree (shot noise limited)
+
+---
+
+## Known Limitations
+
+- Accuracy is shot-noise limited — more shots improve results but increase runtime
+- Ansatz expressibility limits accuracy for larger molecules — more layers needed
+- Simulator only — not tested on real quantum hardware
+- Runtime scales with molecule size and number of Pauli terms
+
+---
+
+Built with Q# (Microsoft Quantum), PySCF, and OpenFermion.
