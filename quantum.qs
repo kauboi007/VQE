@@ -106,13 +106,6 @@ operation expzI(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     }
     return IntAsDouble(zeros-ones)/IntAsDouble(shots);//<z0>=(n0-n1)/(n0+n1)
 }
-operation Main(): Double{
-    let exp = expz0(
-        PI()/4.0,
-        PI()/3.0,
-        PI()/2.0,
-        PI()/2.0,
-        100
-    );
-    return exp;
+operation Main(): Unit{
+    
 }
