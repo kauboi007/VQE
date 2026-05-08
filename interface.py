@@ -26,7 +26,6 @@ def run_vqe(atoms,basis="sto-3g",charge=0,multiplicity=1,shots=1000,runs=5):
             best=res
     print(f"Ground state energy in Hatrees:{best.fun}")
     print(f"Ground state energy in KJ/mol:{best.fun*2625.4996}")
-    fp=best.x # final parameters array
     print(f"Final parameters: {best.x}")
 
 run_vqe([('H', (0,0,0)), ('H', (0,0,0.74))])
