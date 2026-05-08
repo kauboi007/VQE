@@ -1,3 +1,4 @@
+#finished coding on 8/5/26 - 5:11PM
 from openfermionpyscf import run_pyscf
 from openfermion import jordan_wigner, MolecularData
 

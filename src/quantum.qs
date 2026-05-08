@@ -1,3 +1,4 @@
+//finished coding on 8/5/26 - 5:11PM
 namespace mkvqe{
 import Std.Arrays.Partitioned;
 import Std.Convert.IntAsDouble;

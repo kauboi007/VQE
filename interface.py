@@ -1,3 +1,4 @@
+#finished coding on 8/5/26 - 5:11PM
 import qsharp as qs
 import numpy as np
 from scipy.optimize import minimize
@@ -28,7 +29,26 @@ def run_vqe(atoms,basis="sto-3g",charge=0,multiplicity=1,shots=1000,runs=5):
     print(f"Ground state energy in KJ/mol:{best.fun*2625.4996}")
     print(f"Final parameters: {best.x}")
 
-run_vqe([('H', (0,0,0)), ('H', (0,0,0.74))])
+#Example molecules - uncomment and run 
+#due to the limitation of VQE itself , anything beyond LiH will take long time to finish
+#feel free to play with , change the shots , change the amount of times you wanna run the optimization loop
+#make a absolutely destructive molecule by changning the charge and multiplicity in the function call
+#and most importantly have fun!
+
+# Hydrogen molecule H2
+# run_vqe([('H', (0,0,0)), ('H', (0,0,0.74))])
+
+# Lithium Hydride LiH
+# run_vqe([('Li', (0,0,0)), ('H', (0,0,1.6))])
+
+# Helium Hydride HeH+ (charged)
+# run_vqe([('He', (0,0,0)), ('H', (0,0,0.77))], charge=1)
+
+# Water H2O - shots changed for better accuracy
+# run_vqe([('O', (0,0,0)), ('H', (0,0.76,-0.48)), ('H', (0,-0.76,-0.48))], shots=2000)
+
+# Beryllium Hydride BeH2 - shots changed for better accuracy
+# run_vqe([('Be', (0,0,0)), ('H', (0,0,1.33)), ('H', (0,0,-1.33))], shots=2000)
 
 
 
