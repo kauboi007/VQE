@@ -1,37 +1,16 @@
 # ⚛️ VQE — Variational Quantum Eigensolver
 
-<div align="center">
-
 ### Hybrid Quantum-Classical Ground State Solver built from scratch using Q# + Python
 
-<img src="https://img.shields.io/badge/Q%23-Microsoft%20Quantum-blueviolet?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Python-Scientific%20Computing-yellow?style=for-the-badge&logo=python" />
-<img src="https://img.shields.io/badge/OpenFermion-Quantum%20Chemistry-blue?style=for-the-badge" />
-<img src="https://img.shields.io/badge/PySCF-Hartree--Fock-orange?style=for-the-badge" />
-<img src="https://img.shields.io/badge/Status-Working-success?style=for-the-badge" />
+![Q#](https://img.shields.io/badge/Q%23-Microsoft%20Quantum-blueviolet?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-Scientific%20Computing-yellow?style=for-the-badge&logo=python)
+![OpenFermion](https://img.shields.io/badge/OpenFermion-Quantum%20Chemistry-blue?style=for-the-badge)
+![PySCF](https://img.shields.io/badge/PySCF-Hartree--Fock-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Working-success?style=for-the-badge)
 
-<br/>
+> *From molecular geometry → Hamiltonian → variational optimization → ground state energy*
 
-</div>
-
----
-
-# 🧠 Overview
-
-This project implements a **general-purpose Variational Quantum Eigensolver (VQE)** completely from scratch using **Q#** and **Python**.
-
-Given any molecule, the pipeline:
-
-- Generates its molecular Hamiltonian using quantum chemistry libraries
-- Converts it into Pauli operators using the Jordan-Wigner transform
-- Constructs a parameterized quantum circuit in Q#
-- Uses a hybrid classical-quantum optimization loop to estimate the ground state energy
-
-Unlike tutorial-style toy VQEs, this implementation is fully modular and molecule-agnostic.
-
-> **This project is Not Vibecoded**
-
----
+> **This project is not Vibecoded**
 
 # ✨ Features
 
