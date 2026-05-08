@@ -25,6 +25,24 @@ operation expz0(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
     }
     return IntAsDouble(zeros-ones)/IntAsDouble(shots);//<z0>=(n0-n1)/(n0+n1)
 }
+operation expzz(t1:Double,t2:Double,t3:Double,t4:Double,shots:Int): Double{
+    mutable same=0;
+    mutable diff=0;
+    for i in 1..shots{
+        use qs=Qubit[2];
+        ansatz(qs,t1,t2,t3,t4);
+        let r=M(qs[0]);
+        let s=M(qs[1]);
+        if r==s{
+            set same+=1;
+        }
+        else{
+            set diff+=1;
+        }
+        ResetAll(qs);    
+    }
+    return IntAsDouble(same-diff)/IntAsDouble(shots);//<zz>=(nsame-diff)/(nsame0+ndiff)
+}
 operation Main(): Double{
     let exp = expz0(
         PI()/4.0,
