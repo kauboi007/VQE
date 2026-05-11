@@ -1,4 +1,4 @@
-# ⚛️ VQE — Variational Quantum Eigensolver
+# ⚛️ VQE - Variational Quantum Eigensolver
 
 <div align="center">
 
