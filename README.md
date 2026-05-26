@@ -73,27 +73,6 @@ Unlike tutorial-style toy VQEs, this implementation is fully modular and molecul
 
 ---
 
-## 🚀 General VQE Runner
-
-Single call:
-
-```python
-run_vqe(...)
-```
-
-handles:
-
-```text
-Geometry → Hamiltonian → Ansatz → Expectation Values → Optimization → Ground State Energy
-```
-
-Outputs:
-- Ground state energy (Hartree)
-- Energy in kJ/mol
-- Optimal variational parameters
-
----
-
 # 🧬 Tested Molecules
 
 | Molecule | Formula | Status |
@@ -174,27 +153,6 @@ pip install qsharp pyscf openfermion openfermionpyscf numpy scipy
 
 ---
 
-# ▶️ Example Usage
-
-```python
-from interface import run_vqe
-
-geometry = [
-    ("H", (0.0, 0.0, 0.0)),
-    ("H", (0.0, 0.0, 0.74))
-]
-
-run_vqe(
-    geometry=geometry,
-    basis="sto-3g",
-    charge=0,
-    multiplicity=1,
-    shots=2000
-)
-```
-
----
-
 # 📊 Results
 
 ## Hydrogen Molecule (H₂)
@@ -214,20 +172,6 @@ Primarily limited by:
 - finite sampling shots
 - ansatz expressibility
 - optimizer convergence
-
----
-
-# 🔬 Example Hamiltonian
-
-```text
--0.8126 I
-+0.1712 Z0
--0.2228 Z1
-+0.1686 Z0Z1
-+0.1205 X0X1
-```
-
-Generated automatically from molecular integrals.
 
 ---
 
